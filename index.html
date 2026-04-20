@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rhuzzel De Leon Rabe | OOP E-Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:    #f8f3ea;
+      --warm:     #efe6d8;
+      --sand:     #dfd0bc;
+      --rose:     #b07d62;
+      --rose-lt:  #efe0d4;
+      --sage:     #8b9a7a;
+      --sage-lt:  #dde5d4;
+      --ink:      #3a3128;
+      --ink-mid:  #5e5144;
+      --ink-soft: #8c7d6f;
+      --gold:     #b9935f;
+      --gold-lt:  #efe2cf;
+      --border:   #d8c8b3;
+      --shadow:   rgba(58,49,40,0.08);
+      --shadow-md:rgba(58,49,40,0.15);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', sans-serif;
+      --mono:  'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* subtle paper texture */
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      opacity:.08;
+    }
+
+    /* decorative blobs */
+    .blob { display:none; }
+
+    /* ─── NAV ─── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      background:rgba(248,250,252,0.88);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 2.2rem;
+    }
+    .nav-brand {
+      font-family:var(--serif);
+      font-size:1.1rem; font-weight:600;
+      color:var(--ink); letter-spacing:0.01em;
+    }
+    .nav-brand em { color:var(--rose); font-style:italic; }
+
+    .nav-links { display:flex; gap:0.35rem; list-style:none; }
+    .nav-links a {
+      font-family:var(--sans);
+      font-size:0.78rem; font-weight:500;
+      color:var(--ink-mid);
+      text-decoration:none;
+      padding:7px 18px;
+      border-radius:100px;
+      letter-spacing:0.03em;
+      border:1px solid transparent;
+      transition:all 0.2s ease;
+      cursor:pointer;
+    }
+    .nav-links a:hover { background:#fff; color:var(--rose); border-color:#bfdbfe; }
+    .nav-links a.active { background:var(--rose); color:#fff; border-color:var(--rose); box-shadow:0 4px 12px rgba(37,99,235,.22); }
+
+    /* ─── PAGES ─── */
+    .page { display:block; position:relative; z-index:1; scroll-margin-top:84px; }
+    #home { animation:pageIn 0.42s ease both; }
+    @keyframes pageIn {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .wrap {
+      max-width:1120px; margin:0 auto;
+      padding:106px 2rem 80px;
+    }
+    #midterm .wrap, #contact .wrap { padding-top:48px; }
+
+    /* ─── HOME ─── */
+    .home-grid {
+      display:grid; grid-template-columns:1fr 420px;
+      gap:5rem; align-items:center;
+      min-height:calc(100vh - 64px);
+    }
+    #home .shdr { margin-bottom:2rem; }
+    #home .home-grid { min-height:auto; align-items:start; padding-top:.4rem; }
+
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:var(--mono); font-size:0.67rem;
+      color:var(--rose); background:var(--rose-lt);
+      border:1px solid #bfdbfe;
+      padding:5px 14px; border-radius:100px;
+      letter-spacing:0.09em; text-transform:uppercase;
+      margin-bottom:1.8rem;
+      animation:fadeUp .5s ease both;
+    }
+    .eyebrow::before { content:''; width:7px; height:7px; border-radius:2px; background:currentColor; display:inline-block; transform:rotate(45deg); }
+
+    h1.hname {
+      font-family:var(--serif);
+      font-size:clamp(3rem,5.5vw,5rem);
+      font-weight:300; line-height:1.08;
+      letter-spacing:-0.01em; color:var(--ink);
+      animation:fadeUp .5s .08s ease both;
+    }
+    h1.hname strong { font-weight:600; color:var(--rose); display:block; }
+
+    .rule {
+      width:56px; height:2px;
+      background:var(--rose);
+      margin:1.8rem 0;
+      animation:fadeUp .5s .15s ease both;
+    }
+
+    .hmeta {
+      font-family:var(--mono); font-size:0.72rem;
+      color:var(--ink-soft); line-height:2.1;
+      animation:fadeUp .5s .2s ease both;
+    }
+    .hmeta span { color:var(--sage); }
+
+    .hintro {
+      margin-top:1.6rem; font-size:0.94rem;
+      line-height:1.85; color:var(--ink-mid);
+      max-width:450px;
+      animation:fadeUp .5s .26s ease both;
+    }
+
+    .badges {
+      display:flex; gap:.6rem; flex-wrap:wrap;
+      margin-top:2rem;
+      animation:fadeUp .5s .33s ease both;
+    }
+    .pill {
+      font-family:var(--mono); font-size:0.63rem;
+      padding:5px 13px; border-radius:100px;
+      letter-spacing:.07em; text-transform:uppercase; font-weight:500;
+    }
+    .p-rose { background:var(--rose-lt); color:var(--rose); border:1px solid rgba(201,131,122,.3); }
+    .p-sage { background:var(--sage-lt); color:var(--sage); border:1px solid rgba(122,158,138,.3); }
+    .p-gold { background:var(--gold-lt); color:var(--gold); border:1px solid rgba(184,150,90,.3); }
+
+    /* profile card */
+    .pcard {
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:2.4rem;
+      box-shadow:0 8px 40px var(--shadow-md);
+      position:relative; overflow:hidden;
+      animation:fadeUp .5s .18s ease both;
+    }
+    .pcard::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:4px;
+      background:linear-gradient(to right, var(--rose), var(--gold), var(--sage));
+    }
+    .avatar {
+      width:76px; height:76px; border-radius:50%;
+      background:linear-gradient(135deg, var(--rose-lt), var(--gold-lt));
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--serif); font-size:2rem; color:var(--rose);
+      margin-bottom:1.1rem;
+      border:3px solid #fff; box-shadow:0 4px 16px var(--shadow);
+      overflow:hidden;
+    }
+    .avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .pname { font-family:var(--serif); font-size:1.35rem; font-weight:600; color:var(--ink); }
+    .pcourse { font-family:var(--mono); font-size:0.65rem; color:var(--ink-soft); letter-spacing:.06em; text-transform:uppercase; margin:.3rem 0 1.3rem; }
+    .pstats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.9rem; margin-bottom:1.3rem; }
+    .stat { text-align:center; padding:.8rem .4rem; background:var(--warm); border-radius:12px; }
+    .snum { font-family:var(--serif); font-size:1.5rem; font-weight:600; color:var(--rose); display:block; }
+    .slbl { font-family:var(--mono); font-size:0.57rem; color:var(--ink-soft); letter-spacing:.06em; text-transform:uppercase; margin-top:2px; }
+    .prow { font-size:.8rem; color:var(--ink-mid); display:flex; align-items:center; gap:8px; padding:7px 0; border-top:1px solid var(--border); }
+    .prow:first-of-type { border-top:none; }
+    .fi {
+      width:14px;
+      height:14px;
+      display:inline-block;
+      background:currentColor;
+      mask-repeat:no-repeat;
+      mask-position:center;
+      mask-size:contain;
+      -webkit-mask-repeat:no-repeat;
+      -webkit-mask-position:center;
+      -webkit-mask-size:contain;
+      flex-shrink:0;
+    }
+    .fi-mail {
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 6h18v12H3zM4 7l8 6 8-6'/%3E%3C/svg%3E");
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 6h18v12H3zM4 7l8 6 8-6'/%3E%3C/svg%3E");
+    }
+    .fi-school {
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3 2 8l10 5 8-4v6h2V8zM6 11v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4l-6 3z'/%3E%3C/svg%3E");
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3 2 8l10 5 8-4v6h2V8zM6 11v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4l-6 3z'/%3E%3C/svg%3E");
+    }
+    .fi-code {
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m8.6 16.6-4.6-4.6 4.6-4.6 1.4 1.4L6.8 12l3.2 3.2-1.4 1.4Zm6.8 0L14 15.2l3.2-3.2L14 8.8l1.4-1.4L20 12l-4.6 4.6Z'/%3E%3C/svg%3E");
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m8.6 16.6-4.6-4.6 4.6-4.6 1.4 1.4L6.8 12l3.2 3.2-1.4 1.4Zm6.8 0L14 15.2l3.2-3.2L14 8.8l1.4-1.4L20 12l-4.6 4.6Z'/%3E%3C/svg%3E");
+    }
+    .fi-folder {
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 6h6l2 2h10v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z'/%3E%3C/svg%3E");
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 6h6l2 2h10v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z'/%3E%3C/svg%3E");
+    }
+    .fi-calendar {
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2Zm13 8H4v10h16V10Z'/%3E%3C/svg%3E");
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2Zm13 8H4v10h16V10Z'/%3E%3C/svg%3E");
+    }
+
+    /* ─── SECTION HEADER ─── */
+    .shdr { display:flex; align-items:baseline; gap:1.2rem; margin-bottom:2.8rem; }
+    .snum-lbl { font-family:var(--mono); font-size:.63rem; color:var(--rose); letter-spacing:.12em; text-transform:uppercase; }
+    .stitle { font-family:var(--serif); font-size:2.3rem; font-weight:300; color:var(--ink); letter-spacing:-.02em; }
+    .srule { flex:1; height:1px; background:linear-gradient(to right, var(--border), transparent); }
+
+    /* ─── TABS ─── */
+    .tabs { display:flex; gap:.55rem; flex-wrap:wrap; margin-bottom:2rem; }
+    .tb {
+      font-family:var(--sans); font-size:.77rem; font-weight:500;
+      padding:8px 20px; border-radius:100px;
+      border:1px solid var(--border);
+      background:#fff; color:var(--ink-mid);
+      cursor:pointer; transition:all .2s ease; letter-spacing:.02em;
+    }
+    .tb:hover { border-color:#bfdbfe; color:var(--rose); }
+    .tb.active { background:var(--rose); color:#fff; border-color:var(--rose); box-shadow:0 6px 14px rgba(37,99,235,.2); }
+
+    .tab-panel { display:none; animation:fadeUp .33s ease both; }
+    .tab-panel.active { display:block; }
+
+    /* ─── CARDS ─── */
+    .cards { display:grid; gap:1.3rem; }
+    .c2 { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+    .c3 { grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); }
+    .c5 { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+
+    .artifact-slot {
+      margin-top:1rem;
+      min-height:180px;
+      height:220px;
+      border:1px dashed #cbd5e1;
+      border-radius:12px;
+      background:#f8fafc;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      color:var(--ink-soft);
+      font-family:var(--mono);
+      font-size:.68rem;
+      letter-spacing:.05em;
+      text-transform:none;
+      text-align:center;
+      padding:1rem;
+      line-height:1.6;
+      overflow:hidden;
+      --img-size:200px;
+    }
+    .artifact-slot img {
+      width:min(var(--img-size), 100%);
+      height:auto;
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+      border-radius:8px;
+      display:block;
+    }
+    .artifact-slot.has-image {
+      padding:0;
+    }
+    .artifact-slot.has-image img {
+      width:100%;
+      height:100%;
+      max-width:none;
+      max-height:none;
+      object-fit:cover;
+      border-radius:10px;
+    }
+    #seatwork .artifact-slot {
+      width:78%;
+      max-width:620px;
+      min-height:620px;
+      margin:1rem auto 0;
+      padding:1.4rem;
+      border:1px dashed #cbd5e1;
+      border-radius:12px;
+      background:#f8fafc;
+      box-shadow:0 6px 18px rgba(15,23,42,.05);
+    }
+
+    .seatwork-tabs { display:flex; gap:.45rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .sw-tab {
+      font-family:var(--sans);
+      font-size:.74rem;
+      font-weight:500;
+      padding:8px 16px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--ink-mid);
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+    .sw-tab:hover { border-color:#bfdbfe; color:var(--rose); }
+    .sw-tab.active { background:var(--rose); color:#fff; border-color:var(--rose); }
+    .sw-panel { display:none; }
+    .sw-panel.active { display:block; }
+
+    .card {
+      background:#fff; border:1px solid var(--border);
+      border-radius:14px; padding:1.25rem;
+      box-shadow:0 4px 16px var(--shadow);
+      transition:transform .22s, box-shadow .22s, border-color .22s;
+      position:relative; overflow:hidden;
+    }
+    .card:hover { transform:translateY(-2px); box-shadow:0 10px 24px var(--shadow-md); border-color:#c7d2fe; }
+    .cacc {
+      position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(to right, #2563eb, #4f46e5);
+      transform:scaleX(0); transform-origin:left; transition:transform .28s ease;
+    }
+    .card:hover .cacc { transform:scaleX(1); }
+    .cicon { font-size:1.5rem; margin-bottom:.85rem; }
+    .ctitle { font-family:var(--sans); font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:.5rem; }
+    .cbody { font-size:.82rem; color:var(--ink-mid); line-height:1.75; }
+    .cchip {
+      display:inline-block; margin-top:1rem;
+      font-family:var(--mono); font-size:.6rem;
+      color:var(--sage); background:var(--sage-lt);
+      border:1px solid rgba(122,158,138,.3);
+      padding:3px 10px; border-radius:100px;
+      letter-spacing:.06em; text-transform:uppercase;
+    }
+
+    /* ─── TABLE ─── */
+    .tbl-wrap { background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 14px var(--shadow); }
+    table { width:100%; border-collapse:collapse; }
+    thead { background:var(--warm); }
+    th { font-family:var(--mono); font-size:.63rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); padding:13px 20px; text-align:left; border-bottom:1px solid var(--border); }
+    td { font-size:.82rem; padding:13px 20px; border-bottom:1px solid rgba(221,213,200,.5); color:var(--ink-mid); vertical-align:top; line-height:1.65; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:var(--warm); }
+    td:first-child { color:var(--ink); font-weight:500; }
+    .ans { color:var(--sage) !important; font-weight:500 !important; }
+
+    /* ─── CODE BLOCK ─── */
+    .codebox { background:#1e1a15; border-radius:12px; overflow:hidden; margin-top:1rem; box-shadow:0 4px 20px rgba(0,0,0,.14); }
+    .cbar { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:#2a2420; border-bottom:1px solid rgba(255,255,255,.05); }
+    .dots { display:flex; gap:6px; }
+    .dot { width:10px; height:10px; border-radius:50%; }
+    .dr { background:#ff6058; } .dy { background:#ffbd2e; } .dg { background:#28c840; }
+    .cfname { font-family:var(--mono); font-size:.6rem; color:rgba(255,255,255,.3); letter-spacing:.06em; }
+    pre { padding:1.3rem 1.5rem; font-family:var(--mono); font-size:.74rem; line-height:1.9; color:#c9bfb0; overflow-x:auto; }
+    .kw  { color:#d4829b; }
+    .cls { color:#7ec8c8; }
+    .fn  { color:#d4a84b; }
+    .str { color:#95c97a; }
+    .cmt { color:#5a5248; font-style:italic; }
+    .num { color:#c9a96e; }
+
+    /* ─── REFLECTION ─── */
+    .refl {
+      background:linear-gradient(135deg,#fff9f7,#f6faf7);
+      border:1px solid var(--border);
+      border-left:4px solid var(--rose);
+      border-radius:0 16px 16px 0;
+      padding:2rem 2rem 2rem 2.3rem;
+      margin-top:1.4rem; position:relative;
+    }
+    .refl-lbl { font-family:var(--mono); font-size:.6rem; color:var(--rose); letter-spacing:.12em; text-transform:uppercase; margin-bottom:.7rem; }
+    .refl p { font-family:var(--serif); font-size:1.04rem; font-style:italic; color:var(--ink-mid); line-height:1.9; }
+    .refl-mark { position:absolute; top:8px; right:18px; font-family:var(--serif); font-size:5rem; color:var(--rose); opacity:.09; line-height:1; }
+    .qrefl {
+      margin-top:1rem;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      border-left:3px solid var(--rose);
+      border-radius:12px;
+      padding:1rem;
+      box-shadow:none;
+    }
+    .qlabel {
+      font-family:var(--mono);
+      font-size:.62rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--rose);
+      margin-bottom:.65rem;
+    }
+    .qtext {
+      min-height:170px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      padding:.9rem 1rem;
+      font-size:.84rem;
+      color:var(--ink-mid);
+      line-height:1.85;
+      text-transform:none;
+      letter-spacing:normal;
+    }
+
+    /* ─── CONTACT ─── */
+    .cgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.1rem; margin-top:1.5rem; }
+    .ccard { background:#fff; border:1px solid var(--border); border-radius:16px; padding:1.3rem 1.5rem; display:flex; align-items:flex-start; gap:.9rem; box-shadow:0 2px 12px var(--shadow); transition:all .22s; }
+    .ccard:hover { transform:translateY(-3px); box-shadow:0 8px 28px var(--shadow-md); }
+    .ccard > div:last-child { min-width:0; flex:1; }
+    .cico { width:42px; height:42px; border-radius:12px; background:var(--warm); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .clbl { font-family:var(--mono); font-size:.59rem; color:var(--ink-soft); letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
+    .cval { font-size:.83rem; color:var(--ink); font-weight:500; overflow-wrap:anywhere; word-break:break-word; }
+
+    /* ─── FOOTER ─── */
+    footer { position:relative; z-index:1; text-align:center; padding:2rem; font-family:var(--mono); font-size:.63rem; color:var(--ink-soft); border-top:1px solid var(--border); letter-spacing:.06em; }
+    footer span { color:var(--rose); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track { background:var(--warm); }
+    ::-webkit-scrollbar-thumb { background:var(--sand); border-radius:3px; }
+
+    @media(max-width:800px){
+      nav { padding:0 1.2rem; }
+      .wrap { padding:88px 1.2rem 60px; }
+      .home-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .pcard { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Rhuzzel <em>De Leon Rabe</em></div>
+  <ul class="nav-links">
+    <li><a class="nav-btn active" data-page="home">Home</a></li>
+    <li><a class="nav-btn" data-page="midterm">Midterm</a></li>
+    <li><a class="nav-btn" data-page="contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="home" class="page active">
+  <div class="wrap">
+    <div class="shdr">
+      <span class="snum-lbl">01</span>
+      <h2 class="stitle">Home</h2>
+      <div class="srule"></div>
+    </div>
+    <div class="home-grid">
+      <div>
+        <div class="eyebrow">E-Portfolio · Object-Oriented Programming</div>
+        <h1 class="hname">Rhuzzel De Leon <strong>Rabe</strong></h1>
+        <div class="rule"></div>
+        <p class="hmeta">
+          Course &nbsp;<span>Object-Oriented Programming</span><br>
+          Section &nbsp;<span>BSIT 2-1</span><br>
+          School &nbsp;&nbsp;<span>Polytechnic University of the Philippines</span>
+        </p>
+        <p class="hintro">
+          This e-portfolio showcases my journey through Object-Oriented Programming in Java —
+          from core concepts like encapsulation and inheritance to hands-on activities,
+          quizzes, and reflections on my growth as a programmer.
+        </p>
+        <div class="badges">
+          <span class="pill p-rose">Java</span>
+          <span class="pill p-sage">OOP Concepts</span>
+          <span class="pill p-gold">AY 2025–2026</span>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <div class="avatar"><img src="Pfp.jpg" alt="Profile photo"></div>
+        <div class="pname">Rhuzzel Rabe</div>
+        <div class="pcourse">BSIT 2-1 · PUP · OOP</div>
+        <div class="pstats">
+          <div class="stat"><span class="snum">5</span><span class="slbl">Activities</span></div>
+          <div class="stat"><span class="snum">3</span><span class="slbl">Seatworks</span></div>
+          <div class="stat"><span class="snum">2</span><span class="slbl">Quiz</span></div>
+        </div>
+        <div class="prow"><span class="fi fi-mail"></span>rabe.rhuzzel.deleon@gmail.com</div>
+        <div class="prow"><span class="fi fi-school"></span>Polytechnic University of the Philippines</div>
+        <div class="prow"><span class="fi fi-code"></span>Object-Oriented Programming</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MIDTERM ══ -->
+<div id="midterm" class="page">
+  <div class="wrap">
+    <div class="shdr">
+      <span class="snum-lbl">02</span>
+      <h2 class="stitle">Midterm</h2>
+      <div class="srule"></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tb active" data-tab="quizzes">Quizzes</button>
+      <button class="tb" data-tab="seatwork">Seatwork</button>
+      <button class="tb" data-tab="activities">Activities</button>
+      <button class="tb" data-tab="exam">Exam</button>
+    </div>
+
+    <!-- Quizzes -->
+    <div id="quizzes" class="tab-panel active">
+      <div class="cards c2">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Quiz 1</div>
+          <div class="qrefl">
+            <div class="qlabel">My Reflection</div>
+            <p class="qtext">I got a low score on the first quiz. I don’t really know why. Maybe I lacked preparation. I was too confident with my answers. While answering, there were questions I found difficult, but I didn’t think carefully enough about the right answer. I just guessed.
+           Next time, I will do my best.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Quiz 2</div>
+          <div class="qrefl">
+            <div class="qlabel">My Reflection</div>
+            <p class="qtext">It seems like I did well. I dedicated a lot of time to prepare for this quiz, and my efforts paid off. Although there are still some shortcomings, they are fewer compared to the previous quiz. Overall, I am happy with the results and motivated to keep improving.
+              Next time, I will strive even harder to achieve better outcomes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seatwork -->
+    <div id="seatwork" class="tab-panel">
+      <div class="seatwork-tabs">
+        <button class="sw-tab active" data-sw-tab="seatwork-1">Seatwork 1</button>
+        <button class="sw-tab" data-sw-tab="seatwork-2">Seatwork 2</button>
+        <button class="sw-tab" data-sw-tab="seatwork-3">Seatwork 3</button>
+      </div>
+
+      <div id="seatwork-1" class="sw-panel active">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Seatwork 1</div>
+          <div class="artifact-slot"><image src="Seatwork1.png"></image></div>
+        </div>
+      </div>
+      <div id="seatwork-2" class="sw-panel">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Seatwork 2</div>
+          <div class="artifact-slot"><image src= "Act3.png"></image></div>
+        </div>
+      </div>
+      <div id="seatwork-3" class="sw-panel">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Seatwork 3</div>
+          <div class="artifact-slot"><image src="Seatwork 3.png"></image></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activities -->
+    <div id="activities" class="tab-panel">
+      <div class="cards c5">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Activity 1</div>
+          <div class="artifact-slot"><leave this a blank></image></div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Activity 2</div>
+          <div class="artifact-slot"><img src="Activity2.png" alt="Activity 2"></div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Activity 3</div>
+          <div class="artifact-slot"><image src="Activity3.png"></image></div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Activity 4</div>
+          <div class="artifact-slot"><image src="Activity4.png"> </image></div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Activity 5</div>
+          <div class="artifact-slot"><img src="Activity5.png"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam -->
+    <div id="exam" class="tab-panel">
+      <div class="cards c2">
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Exam 1</div>
+          <div class="qrefl">
+            <div class="qlabel">My Reflection</div>
+            <p class="qtext">Write your Exam 1 reflection here.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="cacc"></div>
+          <div class="ctitle">Exam 2</div>
+          <div class="qrefl">
+            <div class="qlabel">My Reflection</div>
+            <p class="qtext">Write your Exam 2 reflection here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- ══ CONTACT ══ -->
+<div id="contact" class="page">
+  <div class="wrap">
+    <div class="shdr">
+      <span class="snum-lbl">03</span>
+      <h2 class="stitle">Contact</h2>
+      <div class="srule"></div>
+    </div>
+    <p style="font-size:.92rem; color:var(--ink-mid); max-width:460px; line-height:1.8;">Feel free to reach out for questions, collaboration, or feedback on this portfolio.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="cico"><span class="fi fi-mail"></span></div><div><div class="clbl">Email</div><div class="cval">rabe.rhuzzel.deleon@gmail.com</div></div></div>
+      <div class="ccard"><div class="cico"><span class="fi fi-school"></span></div><div><div class="clbl">School</div><div class="cval">Polytechnic University of the Philippines</div></div></div>
+      <div class="ccard"><div class="cico"><span class="fi fi-folder"></span></div><div><div class="clbl">GitHub</div><div class="cval">github.com/rhuzzrabe-maker</div></div></div>
+      <div class="ccard"><div class="cico"><span class="fi fi-calendar"></span></div><div><div class="clbl">Section</div><div class="cval">BSIT 2-1 · AY 2025–2026</div></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 &nbsp;·&nbsp; <span>Rhuzzel De Leon Rabe</span> &nbsp;·&nbsp; OOP E-Portfolio &nbsp;·&nbsp; PUP BSIT 2-1
+</footer>
+
+<script>
+  // ── Page navigation (scroll to section) ──
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const pages   = document.querySelectorAll('.page');
+  const navOffset = 84;
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const target = btn.dataset.page;
+      const section = document.getElementById(target);
+      if (!section) return;
+      const top = section.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Highlight nav item for section currently in view.
+  const setActiveNav = sectionId => {
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.page === sectionId));
+  };
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActiveNav(entry.target.id);
+    });
+  }, { root: null, rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+  pages.forEach(section => observer.observe(section));
+
+  // ── Tab navigation ──
+  document.addEventListener('click', e => {
+    if (!e.target.classList.contains('tb')) return;
+    const btn    = e.target;
+    const tabId  = btn.dataset.tab;
+    const parent = btn.closest('.page');
+
+    parent.querySelectorAll('.tb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    parent.querySelectorAll('.tab-panel').forEach(p => {
+      p.classList.remove('active');
+      if (p.id === tabId) p.classList.add('active');
+    });
+  });
+
+  // ── Seatwork inner tabs ──
+  document.addEventListener('click', e => {
+    if (!e.target.classList.contains('sw-tab')) return;
+    const btn = e.target;
+    const tabId = btn.dataset.swTab;
+    const panel = btn.closest('#seatwork');
+    if (!panel) return;
+
+    panel.querySelectorAll('.sw-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    panel.querySelectorAll('.sw-panel').forEach(p => {
+      p.classList.remove('active');
+      if (p.id === tabId) p.classList.add('active');
+    });
+  });
+
+  // ── Mark slots that already have manual images ──
+  document.querySelectorAll('.artifact-slot').forEach(slot => {
+    if (slot.querySelector('img')) slot.classList.add('has-image');
+  });
+
+</script>
+</body>
+</html>
